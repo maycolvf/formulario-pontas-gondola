@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <style>
+      body { font-family: Arial; max-width:500px; margin:30px auto; }
+      label { display:block; margin-top:15px; }
+      input, select, textarea { width:100%; padding:5px; }
+      button { background:#28a745; color:white; border:none; padding:10px 20px; cursor:pointer; margin-top:15px; }
+    </style>
+  </head>
+  <body>
+    <h2>Registro de Ponta de Gôndola</h2>
+    <form id="uploadForm">
+      <label>Loja:</label>
+      <select name="loja" required>
+        <option value="">Selecione</option>
+        <option value="Loja 01">Loja 01</option>
+        <option value="Loja 02">Loja 02</option>
+        <option value="Loja 03">Loja 03</option>
+      </select>
+
+      <label>Fornecedor:</label>
+      <select name="fornecedor" required>
+        <option value="">Selecione</option>
+        <option value="Fornecedor A">Fornecedor A</option>
+        <option value="Fornecedor B">Fornecedor B</option>
+        <option value="Fornecedor C">Fornecedor C</option>
+      </select>
+
+      <label>Comentários:</label>
+      <textarea name="comentarios"></textarea>
+
+      <label>Foto(s):</label>
+      <input type="file" name="fotos" multiple required>
+
+      <button type="submit">Enviar</button>
+    </form>
+
+    <div id="status"></div>
+
+    <script>
+      const form = document.getElementById('uploadForm');
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const status = document.getElementById('status');
+        status.textContent = 'Enviando... aguarde.';
+
+        const formData = new FormData(form);
+
+        fetch('https://script.google.com/macros/s/AKfycbyq8OMD5aMS-OJ8pPj3f6qf50lMeIQMqEMuSo7wqS61Aq44UOHCtFFW4SOITziiMNDV7A/exec', {
+          method: 'POST',
+          body: formData
+        })
+        .then(response => response.text())
+        .then(text => {
+          status.innerHTML = text;
+          form.reset();
+        })
+        .catch(err => {
+          console.error(err);
+          status.textContent = 'Erro ao enviar.';
+        });
+      });
+    </script>
+  </body>
+</html>
