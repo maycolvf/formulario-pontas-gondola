@@ -32,7 +32,7 @@
       <textarea name="comentarios"></textarea>
 
       <label>Foto(s):</label>
-      <input type="file" name="fotos" multiple required>
+      <input id="fotosInput" type="file" name="fotos" multiple required>
 
       <button type="submit">Enviar</button>
     </form>
@@ -46,7 +46,18 @@
         const status = document.getElementById('status');
         status.textContent = 'Enviando... aguarde.';
 
-        const formData = new FormData(form);
+        const formData = new FormData();
+
+        // Campos de texto
+        formData.append("loja", form.loja.value);
+        formData.append("fornecedor", form.fornecedor.value);
+        formData.append("comentarios", form.comentarios.value);
+
+        // Arquivos
+        const files = document.getElementById('fotosInput').files;
+        for (let i = 0; i < files.length; i++) {
+          formData.append('fotos', files[i]);
+        }
 
         fetch('https://script.google.com/macros/s/AKfycbw1jf-Vngfx0OVRraEgDYpLXYpnTX31FqWAJC9xf7984FKZLJg0cjjTDUZJ9LNznvrSxQ/exec', {
           method: 'POST',
